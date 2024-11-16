@@ -3,12 +3,30 @@ import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     description: Authenticate User
+ *     responses:
+ *       200:
+ *         description: Login Successful
+ *       400:
+ *         description: Missing credentials
+ *       401:
+ *         description: Invalid credentials
+ *       403:
+ *         description: Request forbidden
+ *       500:
+ *         description: Internal server error
+ */
+
 // POST method to login
 export async function POST(req: NextRequest) {
     try {
         // validate incoming request
-        const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-        if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+        // const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+        // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
 
         const { email, password } = await req.json(); // read payload data from request
 

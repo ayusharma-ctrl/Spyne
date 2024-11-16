@@ -1,15 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     description: User Registration
+ *     responses:
+ *       201:
+ *         description: Registration Successful
+ *       400:
+ *         description: Existing User
+ *       401:
+ *         description: Invalid credentials
+ *       403:
+ *         description: Request forbidden
+ *       500:
+ *         description: Internal server error
+ */
 
 export async function POST(req: NextRequest) {
     try {
 
         // validate incoming request
-        const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-        if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+        // const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+        // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
 
         const { username, email, password } = await req.json(); // extract data from body
 

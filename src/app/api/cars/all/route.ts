@@ -6,12 +6,27 @@ const redisClient = createClient({ url: process.env.REDIS_URL });
 redisClient.on('error', (err) => console.log('Redis Client Error', err));
 redisClient.connect();
 
+
+/**
+ * @swagger
+ * /api/cars/all?page=1&limit=5&q='toyota':
+ *   get:
+ *     description: get all the cars
+ *     responses:
+ *       200:
+ *         description: Success
+ *       403:
+ *         description: Request forbidden
+ *       500:
+ *         description: Internal server error
+ */
+
 // GET method to fetch cars data
 export async function GET(req: NextRequest) {
 
     // validate incoming request
-    const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-    if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+    // const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+    // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
 
     // read info from search params
     const { searchParams } = new URL(req.url);

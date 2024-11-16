@@ -16,10 +16,28 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * @swagger
+ * /api/cars/add:
+ *   post:
+ *     description: Add new post
+ *     responses:
+ *       201:
+ *         description: Added a new car successfully
+ *       400:
+ *         description: Missing or Invalid payload
+ *       401:
+ *         description: Unauthorzied
+ *       403:
+ *         description: Request forbidden
+ *       500:
+ *         description: Internal server error
+ */
+
 export async function POST(req: NextRequest) {
     // validate incoming request
-    const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-    if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+    // const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+    // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
     
     try {
         // validate token

@@ -15,12 +15,32 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * @swagger
+ * /api/cars/[id]:
+ *   put:
+ *     description: Edit post details
+ *     responses:
+ *       200:
+ *         description: Updates saved
+ *       400:
+ *         description: Missing or Invalid credentials
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Request forbidden
+ *       404:
+ *         description: Data not found
+ *       500:
+ *         description: Internal server error
+ */
+
 // PUT method to update car data 
 export async function PUT(request: NextRequest) {
 
     // validate incoming request
-    const isAuthorizedRequest = request.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-    if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+    // const isAuthorizedRequest = request.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+    // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
 
     // validate user token
     const token = request.cookies.get('token')?.value;
@@ -118,11 +138,30 @@ export async function PUT(request: NextRequest) {
     }
 }
 
+
+/**
+ * @swagger
+ * /api/cars/[id]:
+ *   delete:
+ *     description: Delete post
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Request forbidden
+ *       404:
+ *         description: Data not found
+ *       500:
+ *         description: Internal server error
+ */
+
 export async function DELETE(req: NextRequest) {
 
     // validate incoming request
-    const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
-    if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
+    // const isAuthorizedRequest = req.headers.get('x-api-key') === process.env.NEXT_PUBLIC_X_API_KEY!
+    // if (!isAuthorizedRequest) return NextResponse.json({ success: false, error: 'Request forbidden' }, { status: 403 });
 
     // validate user token
     const token = req.cookies.get('token')?.value;
@@ -158,9 +197,9 @@ export async function DELETE(req: NextRequest) {
         // Invalidate cache
         await redisClient.del(`search:*`);
 
-        return NextResponse.json({ message: 'Car deleted successfully' });
+        return NextResponse.json({ success: true, message: 'Car deleted successfully' }, { status: 200 });
     } catch (error) {
         console.error('Error deleting car:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
     }
 }
